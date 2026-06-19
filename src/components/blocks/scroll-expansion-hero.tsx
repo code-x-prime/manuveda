@@ -19,7 +19,6 @@ interface ScrollExpandMediaProps {
   title?: string;
   date?: string;
   scrollToExpand?: string;
-  textBlend?: boolean;
   children?: ReactNode;
 }
 
@@ -31,7 +30,6 @@ const ScrollExpandMedia = ({
   title,
   date,
   scrollToExpand,
-  textBlend,
   children,
 }: ScrollExpandMediaProps) => {
   const [scrollProgress, setScrollProgress] = useState<number>(0);
@@ -166,10 +164,6 @@ const ScrollExpandMedia = ({
   const mediaHeight = isMobileState
     ? 200 + scrollProgress * 200
     : 300 + scrollProgress * 400;
-  const textTranslateX = scrollProgress * (isMobileState ? 100 : 150);
-
-  const firstWord = title ? title.split(' ')[0] : '';
-  const restOfTitle = title ? title.split(' ').slice(1).join(' ') : '';
 
   return (
     <div
@@ -197,13 +191,39 @@ const ScrollExpandMedia = ({
 
           <div className='container mx-auto flex flex-col items-center justify-start relative z-10'>
             <div className='flex flex-col items-center justify-center w-full h-[100dvh] relative'>
+              
+              <div className='flex flex-col items-center gap-4 sm:gap-6 mb-6 sm:mb-8 relative z-20'>
+                {date && (
+                  <motion.p
+                    className='text-base sm:text-lg md:text-xl text-emerald-300 tracking-[0.2em] uppercase font-light'
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.8 }}
+                    style={{ textShadow: '0 2px 15px rgba(0, 0, 0, 0.8)' }}
+                  >
+                    {date}
+                  </motion.p>
+                )}
+                {title && (
+                  <motion.h1
+                    className='text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light italic text-white text-center tracking-tight'
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                    style={{ textShadow: '0 4px 30px rgba(0, 0, 0, 0.6)' }}
+                  >
+                    {title}
+                  </motion.h1>
+                )}
+              </div>
+
               <div
-                className='absolute z-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-none rounded-xl overflow-hidden'
+                className='relative z-0 transition-none rounded-xl overflow-hidden'
                 style={{
                   width: `${mediaWidth}px`,
                   height: `${mediaHeight}px`,
                   maxWidth: '95vw',
-                  maxHeight: '85vh',
+                  maxHeight: '70vh',
                   boxShadow: '0px 0px 50px rgba(0, 0, 0, 0.3)',
                 }}
               >
@@ -286,55 +306,46 @@ const ScrollExpandMedia = ({
                   </div>
                 )}
 
-                <div className='flex flex-col items-center text-center relative z-10 mt-4 transition-none px-4'>
-                  {date && (
-                    <p
-                      className='text-lg md:text-2xl text-white font-medium'
-                      style={{
-                        transform: `translateX(-${textTranslateX}vw)`,
-                        textShadow: '0 2px 15px rgba(0, 0, 0, 0.8)',
-                      }}
-                    >
-                      {date}
-                    </p>
-                  )}
-                  {scrollToExpand && (
-                    <p
-                      className='text-white font-medium text-center text-sm md:text-base'
-                      style={{
-                        transform: `translateX(${textTranslateX}vw)`,
-                        textShadow: '0 2px 10px rgba(0, 0, 0, 0.8)',
-                      }}
-                    >
-                      {scrollToExpand}
-                    </p>
-                  )}
-                </div>
               </div>
 
-              <div
-                className={`flex items-center justify-center text-center gap-2 md:gap-4 w-full relative z-10 transition-none flex-col px-4 ${textBlend ? 'mix-blend-difference' : 'mix-blend-normal'
-                  }`}
-              >
-                <motion.h2
-                  className='text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white transition-none'
-                  style={{
-                    transform: `translateX(-${textTranslateX}vw)`,
-                    textShadow: '0 4px 20px rgba(0, 0, 0, 0.8), 0 2px 10px rgba(0, 0, 0, 0.6)',
-                  }}
+              {scrollToExpand && (
+                <motion.div
+                  className='flex flex-col items-center gap-3 mt-6 sm:mt-8 relative z-20'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1, duration: 0.8 }}
                 >
-                  {firstWord}
-                </motion.h2>
-                <motion.h2
-                  className='text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-center text-white transition-none'
-                  style={{
-                    transform: `translateX(${textTranslateX}vw)`,
-                    textShadow: '0 4px 20px rgba(0, 0, 0, 0.8), 0 2px 10px rgba(0, 0, 0, 0.6)',
-                  }}
-                >
-                  {restOfTitle}
-                </motion.h2>
-              </div>
+                  <p
+                    className='text-white/80 font-light text-sm sm:text-base tracking-widest uppercase'
+                    style={{ textShadow: '0 2px 10px rgba(0, 0, 0, 0.8)' }}
+                  >
+                    {scrollToExpand}
+                  </p>
+                  <motion.div
+                    animate={{ y: [0, 5, 0] }}
+                    transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
+                    className='relative'
+                  >
+                    <svg
+                      className='w-7 h-10 sm:w-8 sm:h-11 text-white/70'
+                      viewBox='0 0 28 44'
+                      fill='none'
+                      stroke='currentColor'
+                      strokeWidth='2'
+                    >
+                      <rect x='1' y='1' width='26' height='42' rx='13' />
+                      <motion.circle
+                        cx='14'
+                        cy='14'
+                        r='3'
+                        fill='currentColor'
+                        animate={{ cy: [12, 20, 12] }}
+                        transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
+                      />
+                    </svg>
+                  </motion.div>
+                </motion.div>
+              )}
             </div>
 
             <motion.section

@@ -223,9 +223,9 @@ const Page = () => {
             mediaSrc='https://desirediv-storage.blr1.cdn.digitaloceanspaces.com/daffodils/magnific_create-a-premium-cinemati_UyqWzaiwny.mp4'
             posterSrc='/desktop.png'
             bgImageSrc='/desktop.png'
-            title='Manuveda is Coming Soon'
+            title='Coming Soon'
             date='Ancient Wisdom. Modern Wellness.'
-            scrollToExpand='Scroll to Explore'
+            scrollToExpand='Scroll Down'
           >
             <div className='max-w-4xl mx-auto'>
               <h2 className='text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-emerald-800'>
